@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = InfrastructureConstants.USER_MICROSERVICE_NAME, url = InfrastructureConstants.USER_MICROSERVICE_URL)
-public interface IUserFeignClient {
+@FeignClient(name = InfrastructureConstants.HOUSE_MICROSERVICE_NAME, url = InfrastructureConstants.HOUSE_MICROSERVICE_URL)
+public interface IHouseFeignClient {
 
-    @GetMapping(InfrastructureConstants.USER_GET_ID_BY_EMAIL_ENDPOINT)
-    ResponseEntity<Long> getUserIdByEmail(@RequestParam(InfrastructureConstants.USER_EMAIL_PARAM) String email);
+    @GetMapping(InfrastructureConstants.HOUSE_EXISTS_ENDPOINT)
+    ResponseEntity<Boolean> existsHouseById(@RequestParam(InfrastructureConstants.HOUSE_ID_PARAM) long houseId);
 
 }
