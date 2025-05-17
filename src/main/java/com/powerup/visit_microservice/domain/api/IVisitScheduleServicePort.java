@@ -8,7 +8,6 @@ import java.util.List;
 public interface IVisitScheduleServicePort {
 
     void createVisitSchedule(VisitScheduleModel visitScheduleModel);
-
     List<VisitScheduleModel> getVisitSchedule(int page, int size, LocalDateTime startDateTime, LocalDateTime endDateTime);
-
+    void createVisitRequest(Long visitScheduleId);
 }

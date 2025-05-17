@@ -1,6 +1,7 @@
 package com.powerup.visit_microservice.domain.factory;
 
 import com.powerup.visit_microservice.domain.model.VisitScheduleModel;
+import com.powerup.visit_microservice.domain.model.VisitScheduleRequestModel;
 
 import java.time.LocalDateTime;
 
@@ -37,6 +38,14 @@ public class VisitScheduleTestDataFactory {
         visitScheduleModel.setStartDateTime(dateTime);
         visitScheduleModel.setEndDateTime(dateTime);
         return visitScheduleModel;
+    }
+
+    public static VisitScheduleRequestModel visitScheduleRequestModeWithNullBuyerEmail() {
+        VisitScheduleRequestModel visitScheduleRequestModel = new VisitScheduleRequestModel();
+        visitScheduleRequestModel.setId(1L);
+        visitScheduleRequestModel.setVisitScheduleId(1L);
+        visitScheduleRequestModel.setBuyerEmail("email@hotmail.com");
+        return visitScheduleRequestModel;
     }
 
 }

@@ -34,12 +34,11 @@ public class VisitScheduleController {
             @ApiResponse(responseCode = InfrastructureConstants.RESPONSE_CODE_201, description = InfrastructureConstants.RESPONSE_201_DESCRIPTION),
             @ApiResponse(responseCode = InfrastructureConstants.RESPONSE_CODE_400, description = InfrastructureConstants.RESPONSE_400_DESCRIPTION),
     })
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Void> createVisitSchedule(@RequestBody @Valid VisitScheduleRequestDto visitScheduleRequestDto) {
         visitScheduleHandler.createVisitSchedule(visitScheduleRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
 
     @Operation(
             summary = InfrastructureConstants.GET_VISIT_SCHEDULES_SUMMARY,
@@ -58,4 +57,21 @@ public class VisitScheduleController {
         PagedResult<VisitScheduleResponseDto> result = visitScheduleHandler.getVisitSchedule(page, size, startDateTime, endDateTime);
         return ResponseEntity.ok(result);
     }
+
+
+    @Operation(
+            summary = InfrastructureConstants.CREATE_VISIT_REQUEST_SUMMARY,
+            description = InfrastructureConstants.CREATE_VISIT_REQUEST_DESCRIPTION
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = InfrastructureConstants.RESPONSE_CODE_201, description = InfrastructureConstants.RESPONSE_201_VISIT_REQUEST_CREATED),
+            @ApiResponse(responseCode = InfrastructureConstants.RESPONSE_CODE_400, description = InfrastructureConstants.RESPONSE_400_INVALID_INPUT),
+            @ApiResponse(responseCode = InfrastructureConstants.RESPONSE_CODE_500, description = InfrastructureConstants.RESPONSE_500_INTERNAL_SERVER_ERROR)
+    })
+    @PostMapping(InfrastructureConstants.VISIT_SCHEDULES_REQUEST)
+    public ResponseEntity<Void> createVisitRequest(@RequestParam Long visitScheduleId) {
+        visitScheduleHandler.createVisitRequest(visitScheduleId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 }

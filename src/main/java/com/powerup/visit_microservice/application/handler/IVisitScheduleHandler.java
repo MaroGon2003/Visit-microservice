@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 public interface IVisitScheduleHandler {
 
     void createVisitSchedule(VisitScheduleRequestDto visitScheduleRequestDto);
-
     PagedResult<VisitScheduleResponseDto> getVisitSchedule(int page, int size, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    void createVisitRequest(Long visitScheduleId);
 }

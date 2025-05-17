@@ -91,6 +91,24 @@ public class ExceptionManager {
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(SlotCapacityExceededException.class)
+    public ResponseEntity<ApiResponse> slotCapacityExceededException(SlotCapacityExceededException e, WebRequest request) {
+        ApiResponse apiResponse = new ApiResponse(e.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(VisitAlreadyRequestedException.class)
+    public ResponseEntity<ApiResponse> visitAlreadyRequestedException(VisitAlreadyRequestedException e, WebRequest request) {
+        ApiResponse apiResponse = new ApiResponse(e.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(VisitScheduleNotFoundException.class)
+    public ResponseEntity<ApiResponse> visitScheduleNotFoundException(VisitScheduleNotFoundException e, WebRequest request) {
+        ApiResponse apiResponse = new ApiResponse(e.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> methodArgumentNotValidException(MethodArgumentNotValidException e, WebRequest request) {
 

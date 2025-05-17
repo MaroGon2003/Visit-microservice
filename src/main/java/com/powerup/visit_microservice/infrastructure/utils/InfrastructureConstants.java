@@ -33,6 +33,13 @@ public class InfrastructureConstants {
     public static final String GET_VISIT_SCHEDULES_SUMMARY = "Get visit schedules";
     public static final String GET_VISIT_SCHEDULES_DESCRIPTION = "Retrieve a paginated list of visit schedules";
     public static final String RESPONSE_CODE_400_DESCRIPTION = "Invalid request parameters";
+    public static final String VISIT_SCHEDULES_REQUEST = "/request";
+    public static final String CREATE_VISIT_REQUEST_SUMMARY = "Create a visit request";
+    public static final String CREATE_VISIT_REQUEST_DESCRIPTION = "Create a visit request for a specific visit schedule";
+    public static final String RESPONSE_201_VISIT_REQUEST_CREATED = "Visit request created successfully";
+    public static final String RESPONSE_400_INVALID_INPUT = "Invalid input data";
+    public static final String RESPONSE_500_INTERNAL_SERVER_ERROR = "Internal server error";
+
 
 
 
@@ -65,6 +72,9 @@ public class InfrastructureConstants {
     //JPA constants
     public static final String SORT_BY_START_DATE_TIME = "startDateTime";
     public static final String SORT_DIRECTION_DESC = "DESC";
+
+    // Visit schedule request
+    public static final String MAX_VISIT_SCHEDULE_CAPACITY = "2";
 
 
 }

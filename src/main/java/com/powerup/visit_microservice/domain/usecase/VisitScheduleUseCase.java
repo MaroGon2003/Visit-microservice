@@ -3,6 +3,7 @@ package com.powerup.visit_microservice.domain.usecase;
 import com.powerup.visit_microservice.domain.api.IVisitScheduleServicePort;
 import com.powerup.visit_microservice.domain.exception.*;
 import com.powerup.visit_microservice.domain.model.VisitScheduleModel;
+import com.powerup.visit_microservice.domain.model.VisitScheduleRequestModel;
 import com.powerup.visit_microservice.domain.spi.IHouseFeignPersistencePort;
 import com.powerup.visit_microservice.domain.spi.IJwtInterceptorPort;
 import com.powerup.visit_microservice.domain.spi.IUserFeignPersistencePort;
@@ -101,6 +102,46 @@ public class VisitScheduleUseCase implements IVisitScheduleServicePort {
 
         return visitSchedules.get();
 
+    }
+
+    @Override
+    public void createVisitRequest(Long visitScheduleId) {
+
+        if (!visitSchedulePersistencePort.existsByVisitScheduleId(visitScheduleId)) {
+            throw new VisitScheduleNotFoundException(DomainConstants.SCHEDULE_NOT_FOUND);
+        }
+
+        VisitScheduleRequestModel visitScheduleRequestModel = new VisitScheduleRequestModel();
+
+        try {
+            String email = jwtInterceptorPort.getEmailFromToken();
+            visitScheduleRequestModel.setBuyerEmail(email);
+            visitScheduleRequestModel.setVisitScheduleId(visitScheduleId);
+
+        }catch (Exception e){
+            throw new UserNotFoundException(DomainConstants.USER_NOT_FOUND);
+        }
+
+        if (visitSchedulePersistencePort.existsByVisitScheduleIdAndBuyerEmail(visitScheduleId, visitScheduleRequestModel.getBuyerEmail())) {
+            throw new VisitAlreadyRequestedException(DomainConstants.VISIT_ALREADY_REQUESTED);
+        }
+
+        if (visitSchedulePersistencePort.validateSlotCapacity(visitScheduleId) == DomainConstants.SLOT_CAPACITY_THRESHOLD_DEACTIVATE) {
+            deactivateVisitSchedule(visitScheduleId);
+        } else if (visitSchedulePersistencePort.validateSlotCapacity(visitScheduleId) >= DomainConstants.SLOT_CAPACITY_THRESHOLD_EXCEEDED) {
+            throw new SlotCapacityExceededException(DomainConstants.SLOT_CAPACITY_EXCEEDED);
+        }
+
+        visitSchedulePersistencePort.createVisitRequest(visitScheduleRequestModel);
+
+    }
+
+    private void deactivateVisitSchedule(Long visitScheduleId) {
+        VisitScheduleModel visitScheduleModel = visitSchedulePersistencePort.getVisitScheduleById(visitScheduleId);
+        if (visitScheduleModel != null) {
+            visitScheduleModel.setAvailable(false);
+            visitSchedulePersistencePort.createVisitSchedule(visitScheduleModel);
+        }
     }
 
 }
