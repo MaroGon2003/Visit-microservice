@@ -35,4 +35,9 @@ public class VisitScheduleHandler implements IVisitScheduleHandler {
         return new PagedResult<>(visitScheduleResponseDtoList, page, size);
     }
 
+    @Override
+    public void createVisitRequest(Long visitScheduleId) {
+        visitScheduleServicePort.createVisitRequest(visitScheduleId);
+    }
+
 }

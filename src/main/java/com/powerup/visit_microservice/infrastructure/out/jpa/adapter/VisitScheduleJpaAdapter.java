@@ -1,9 +1,12 @@
 package com.powerup.visit_microservice.infrastructure.out.jpa.adapter;
 
 import com.powerup.visit_microservice.domain.model.VisitScheduleModel;
+import com.powerup.visit_microservice.domain.model.VisitScheduleRequestModel;
 import com.powerup.visit_microservice.domain.spi.IVisitSchedulePersistencePort;
 import com.powerup.visit_microservice.infrastructure.out.jpa.mapper.IVisitScheduleEntityMapper;
+import com.powerup.visit_microservice.infrastructure.out.jpa.mapper.IVisitScheduleRequestEntityMapper;
 import com.powerup.visit_microservice.infrastructure.out.jpa.repository.IVisitScheduleRepository;
+import com.powerup.visit_microservice.infrastructure.out.jpa.repository.IVisitScheduleRequestRepository;
 import com.powerup.visit_microservice.infrastructure.utils.InfrastructureConstants;
 import com.powerup.visit_microservice.infrastructure.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
@@ -21,6 +24,10 @@ public class VisitScheduleJpaAdapter implements IVisitSchedulePersistencePort {
     private final IVisitScheduleEntityMapper visitScheduleEntityMapper;
 
     private final IVisitScheduleRepository visitScheduleRepository;
+
+    private final IVisitScheduleRequestEntityMapper visitScheduleRequestEntityMapper;
+
+    private final IVisitScheduleRequestRepository visitScheduleRequestRepository;
 
     @Override
     public void createVisitSchedule(VisitScheduleModel visitScheduleModel) {
@@ -74,6 +81,34 @@ public class VisitScheduleJpaAdapter implements IVisitSchedulePersistencePort {
 
         return Optional.of(visitScheduleEntityMapper.toVisitScheduleModelList(
                 visitScheduleRepository.findAll(pageable).toList()));
+    }
+
+    @Override
+    public void createVisitRequest(VisitScheduleRequestModel visitScheduleRequestModel) {
+
+        visitScheduleRequestRepository.save(visitScheduleRequestEntityMapper.toVisitScheduleRequestEntity(visitScheduleRequestModel));
+
+    }
+
+    @Override
+    public boolean existsByVisitScheduleIdAndBuyerEmail(Long visitScheduleId, String buyerEmail) {
+        return visitScheduleRequestRepository.existsByVisitScheduleIdAndBuyerEmail(visitScheduleId, buyerEmail);
+    }
+
+    @Override
+    public boolean existsByVisitScheduleId(Long visitScheduleId) {
+        return visitScheduleRepository.existsById(visitScheduleId);
+    }
+
+    @Override
+    public int validateSlotCapacity(Long visitScheduleId) {
+        return visitScheduleRequestRepository.countByVisitScheduleId(visitScheduleId);
+    }
+
+    @Override
+    public VisitScheduleModel getVisitScheduleById(Long visitScheduleId) {
+        return visitScheduleEntityMapper.toVisitScheduleModel(
+                visitScheduleRepository.findById(visitScheduleId).orElse(null));
     }
 
 }

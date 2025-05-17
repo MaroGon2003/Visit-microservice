@@ -21,5 +21,14 @@ public class DomainConstants {
     public static final String PAGE_INDEX_NEGATIVE_ERROR = "Page index must not be negative";
     public static final String PAGE_SIZE_ZERO_OR_NEGATIVE_ERROR = "Page size must be greater than zero";
 
+    // Constants for VisitScheduleRequest
+    public static final String VISIT_ALREADY_REQUESTED = "Visit already requested for this schedule.";
+    public static final String SCHEDULE_NOT_FOUND = "Schedule not found.";
+    public static final String SLOT_CAPACITY_EXCEEDED = "Slot capacity exceeded.";
+
+    // Slot capacity constants
+    public static final int SLOT_CAPACITY_THRESHOLD_DEACTIVATE = 1;
+    public static final int SLOT_CAPACITY_THRESHOLD_EXCEEDED = 2;
+
 
 }

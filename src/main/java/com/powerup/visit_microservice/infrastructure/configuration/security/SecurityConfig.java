@@ -41,8 +41,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**",
                                 "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/visit-schedules").hasRole("SELLER")
-                        .requestMatchers(HttpMethod.GET, "/visit-schedules").permitAll()
+                        .requestMatchers("/visit-schedules/save").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.GET, "/visit-schedules").hasAnyRole("ADMIN", "SELLER", "BUYER")
+                        .requestMatchers("/visit-schedules/request").hasRole("BUYER")
+
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtEntryPoint))

@@ -13,7 +13,9 @@ import com.powerup.visit_microservice.infrastructure.out.feing.client.impl.House
 import com.powerup.visit_microservice.infrastructure.out.feing.client.impl.UserFeignClient;
 import com.powerup.visit_microservice.infrastructure.out.jpa.adapter.VisitScheduleJpaAdapter;
 import com.powerup.visit_microservice.infrastructure.out.jpa.mapper.IVisitScheduleEntityMapper;
+import com.powerup.visit_microservice.infrastructure.out.jpa.mapper.IVisitScheduleRequestEntityMapper;
 import com.powerup.visit_microservice.infrastructure.out.jpa.repository.IVisitScheduleRepository;
+import com.powerup.visit_microservice.infrastructure.out.jpa.repository.IVisitScheduleRequestRepository;
 import com.powerup.visit_microservice.infrastructure.out.jwtinterceptor.JwtInterceptorAdapter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ public class BeanConfiguration {
 
     private final IVisitScheduleRepository visitScheduleRepository;
     private final IVisitScheduleEntityMapper visitScheduleEntityMapper;
+    private final IVisitScheduleRequestEntityMapper visitScheduleRequestEntityMapper;
+    private final IVisitScheduleRequestRepository visitScheduleRequestRepository;
 
     private final IUserFeignClient userFeignClient;
     private final IHouseFeignClient houseFeignClient;
@@ -35,7 +39,7 @@ public class BeanConfiguration {
 
     @Bean
     public IVisitSchedulePersistencePort visitSchedulePersistencePort() {
-        return new VisitScheduleJpaAdapter(visitScheduleEntityMapper, visitScheduleRepository);
+        return new VisitScheduleJpaAdapter(visitScheduleEntityMapper, visitScheduleRepository, visitScheduleRequestEntityMapper, visitScheduleRequestRepository);
     }
 
     @Bean
