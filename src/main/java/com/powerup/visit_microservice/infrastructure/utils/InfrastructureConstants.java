@@ -8,6 +8,8 @@ public class InfrastructureConstants {
     //Statues http
     public static final String RESPONSE_CODE_201 = "201";
     public static final String RESPONSE_CODE_400 = "400";
+    public static final String RESPONSE_CODE_500 = "500";
+    public static final String RESPONSE_CODE_200 = "200";
 
     //JWT
     public static final String TOKEN_INVALID =  "Token is invalid";
@@ -26,6 +28,12 @@ public class InfrastructureConstants {
     public static final String CREATE_VISIT_SCHEDULE_SUMMARY = "Create a new visit schedule";
     public static final String RESPONSE_201_DESCRIPTION = "Visit schedule created successfully";
     public static final String RESPONSE_400_DESCRIPTION = "Invalid input data";
+    public static final String RESPONSE_CODE_200_DESCRIPTION = "List of visit schedules retrieved successfully";
+    public static final String RESPONSE_CODE_500_DESCRIPTION = "Internal server error";
+    public static final String GET_VISIT_SCHEDULES_SUMMARY = "Get visit schedules";
+    public static final String GET_VISIT_SCHEDULES_DESCRIPTION = "Retrieve a paginated list of visit schedules";
+    public static final String RESPONSE_CODE_400_DESCRIPTION = "Invalid request parameters";
+
 
 
     //Feign client House
@@ -47,6 +55,16 @@ public class InfrastructureConstants {
     public static final String USER_EMAIL_PARAM = "email";
 
 
+    // Default values
+    public static final String DEFAULT_PAGE = "0";
+    public static final String DEFAULT_SIZE = "10";
+
+    //Pagination
+    public static final String SORT_DIRECTION_ASC = "ASC";
+
+    //JPA constants
+    public static final String SORT_BY_START_DATE_TIME = "startDateTime";
+    public static final String SORT_DIRECTION_DESC = "DESC";
 
 
 }

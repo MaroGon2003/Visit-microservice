@@ -7,6 +7,7 @@ import com.powerup.visit_microservice.infrastructure.configuration.security.jwt.
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -40,7 +41,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**",
                                 "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/visit-schedules").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.POST, "/visit-schedules").hasRole("SELLER")
+                        .requestMatchers(HttpMethod.GET, "/visit-schedules").permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtEntryPoint))
