@@ -15,5 +15,11 @@ public class DomainConstants {
     public static final String HOUSE_NOT_FOUND = "House not found.";
     public static final String USER_NOT_FOUND = "User not found.";
 
+    //Pagination
+    public static final int MIN_PAGE_INDEX = 0;
+    public static final int MIN_PAGE_SIZE = 1;
+    public static final String PAGE_INDEX_NEGATIVE_ERROR = "Page index must not be negative";
+    public static final String PAGE_SIZE_ZERO_OR_NEGATIVE_ERROR = "Page size must be greater than zero";
+
 
 }

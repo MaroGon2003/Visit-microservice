@@ -9,16 +9,18 @@ public class VisitScheduleModel {
     private Long houseId;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private boolean isAvailable;
 
     public VisitScheduleModel() {
     }
 
-    public VisitScheduleModel(Long id, Long sellerId, Long houseId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public VisitScheduleModel(Long id, Long sellerId, Long houseId, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean isAvailable) {
         this.id = id;
         this.sellerId = sellerId;
         this.houseId = houseId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.isAvailable = isAvailable;
     }
 
     public Long getId() {
@@ -59,5 +61,13 @@ public class VisitScheduleModel {
 
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

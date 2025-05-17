@@ -12,11 +12,12 @@ public class VisitScheduleTestDataFactory {
         visitScheduleModel.setHouseId(1L);
         visitScheduleModel.setStartDateTime(LocalDateTime.now().plusWeeks(1));
         visitScheduleModel.setEndDateTime(LocalDateTime.now().plusWeeks(1).plusHours(1));
+        visitScheduleModel.setAvailable(true);
         return visitScheduleModel;
     }
 
     public static VisitScheduleModel validVisitScheduleModel() {
-        return new VisitScheduleModel(1L,1L, 1L, LocalDateTime.now().plusWeeks(1), LocalDateTime.now().plusWeeks(1).plusHours(1));
+        return new VisitScheduleModel(1L,1L, 1L, LocalDateTime.now().plusWeeks(1), LocalDateTime.now().plusWeeks(1).plusHours(1), true);
     }
 
     public static VisitScheduleModel visitScheduleModelWithStartDateAfterEndDate() {

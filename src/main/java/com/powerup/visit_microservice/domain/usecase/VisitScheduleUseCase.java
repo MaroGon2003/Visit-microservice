@@ -8,8 +8,11 @@ import com.powerup.visit_microservice.domain.spi.IJwtInterceptorPort;
 import com.powerup.visit_microservice.domain.spi.IUserFeignPersistencePort;
 import com.powerup.visit_microservice.domain.spi.IVisitSchedulePersistencePort;
 import com.powerup.visit_microservice.domain.utils.DomainConstants;
+import com.powerup.visit_microservice.domain.utils.PaginationValidator;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 public class VisitScheduleUseCase implements IVisitScheduleServicePort {
 
@@ -64,7 +67,39 @@ public class VisitScheduleUseCase implements IVisitScheduleServicePort {
             throw new HouseNotFoundException(DomainConstants.HOUSE_NOT_FOUND);
         }
 
+        visitScheduleModel.setAvailable(true);
+
        visitSchedulePersistencePort.createVisitSchedule(visitScheduleModel);
+
+    }
+
+    @Override
+    public List<VisitScheduleModel> getVisitSchedule(int page, int size, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+
+        PaginationValidator.validatePaginationParameters(page, size);
+
+        Optional<List<VisitScheduleModel>> visitSchedules;
+
+        if(startDateTime == null && endDateTime != null){
+            visitSchedules = visitSchedulePersistencePort.getVisitSchedulesByEndDateTime(endDateTime, page, size);
+        } else if (startDateTime != null && endDateTime == null) {
+            visitSchedules = visitSchedulePersistencePort.getVisitSchedulesByStartDateTime(startDateTime, page, size);
+        } else if (startDateTime != null && endDateTime != null) {
+
+            if (startDateTime.isAfter(endDateTime)) {
+                throw new StartDateAfterEndDateException(DomainConstants.START_DATE_AFTER_END_DATE);
+            }
+
+            visitSchedules = visitSchedulePersistencePort.getVisitSchedulesByDateRange(startDateTime, endDateTime, page, size);
+        } else {
+            visitSchedules = visitSchedulePersistencePort.getAllVisitSchedules(page, size);
+        }
+
+        if (visitSchedules.isEmpty()) {
+            return List.of();
+        }
+
+        return visitSchedules.get();
 
     }
 

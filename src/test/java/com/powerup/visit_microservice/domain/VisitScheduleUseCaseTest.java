@@ -16,9 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -208,6 +209,106 @@ class VisitScheduleUseCaseTest {
 
         // Assert
         verify(visitSchedulePersistencePort).createVisitSchedule(visitScheduleModel);
+    }
+
+    //new tests
+
+    @Test
+    void shouldReturnVisitSchedulesByEndDateTime() {
+        // Arrange
+        LocalDateTime endDateTime = LocalDateTime.now();
+        int page = 0, size = 10;
+        List<VisitScheduleModel> expectedSchedules = List.of(new VisitScheduleModel());
+        when(visitSchedulePersistencePort.getVisitSchedulesByEndDateTime(endDateTime, page, size))
+                .thenReturn(Optional.of(expectedSchedules));
+
+        // Act
+        List<VisitScheduleModel> result = visitScheduleUseCase.getVisitSchedule(page, size, null, endDateTime);
+
+        // Assert
+        assertEquals(expectedSchedules, result);
+        verify(visitSchedulePersistencePort).getVisitSchedulesByEndDateTime(endDateTime, page, size);
+    }
+
+    @Test
+    void shouldReturnVisitSchedulesByStartDateTime() {
+        // Arrange
+        LocalDateTime startDateTime = LocalDateTime.now();
+        int page = 0, size = 10;
+        List<VisitScheduleModel> expectedSchedules = List.of(new VisitScheduleModel());
+        when(visitSchedulePersistencePort.getVisitSchedulesByStartDateTime(startDateTime, page, size))
+                .thenReturn(Optional.of(expectedSchedules));
+
+        // Act
+        List<VisitScheduleModel> result = visitScheduleUseCase.getVisitSchedule(page, size, startDateTime, null);
+
+        // Assert
+        assertEquals(expectedSchedules, result);
+        verify(visitSchedulePersistencePort).getVisitSchedulesByStartDateTime(startDateTime, page, size);
+    }
+
+    @Test
+    void shouldReturnVisitSchedulesByDateRange() {
+        // Arrange
+        LocalDateTime startDateTime = LocalDateTime.now().minusDays(1);
+        LocalDateTime endDateTime = LocalDateTime.now();
+        int page = 0, size = 10;
+        List<VisitScheduleModel> expectedSchedules = List.of(new VisitScheduleModel());
+        when(visitSchedulePersistencePort.getVisitSchedulesByDateRange(startDateTime, endDateTime, page, size))
+                .thenReturn(Optional.of(expectedSchedules));
+
+        // Act
+        List<VisitScheduleModel> result = visitScheduleUseCase.getVisitSchedule(page, size, startDateTime, endDateTime);
+
+        // Assert
+        assertEquals(expectedSchedules, result);
+        verify(visitSchedulePersistencePort).getVisitSchedulesByDateRange(startDateTime, endDateTime, page, size);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenStartDateAfterEndDate2() {
+        // Arrange
+        LocalDateTime startDateTime = LocalDateTime.now();
+        LocalDateTime endDateTime = LocalDateTime.now().minusDays(1);
+        int page = 0, size = 10;
+
+        // Act & Assert
+        StartDateAfterEndDateException exception = assertThrows(
+                StartDateAfterEndDateException.class,
+                () -> visitScheduleUseCase.getVisitSchedule(page, size, startDateTime, endDateTime)
+        );
+        assertEquals(DomainConstants.START_DATE_AFTER_END_DATE, exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnAllVisitSchedulesWhenNoDatesProvided() {
+        // Arrange
+        int page = 0, size = 10;
+        List<VisitScheduleModel> expectedSchedules = List.of(new VisitScheduleModel());
+        when(visitSchedulePersistencePort.getAllVisitSchedules(page, size))
+                .thenReturn(Optional.of(expectedSchedules));
+
+        // Act
+        List<VisitScheduleModel> result = visitScheduleUseCase.getVisitSchedule(page, size, null, null);
+
+        // Assert
+        assertEquals(expectedSchedules, result);
+        verify(visitSchedulePersistencePort).getAllVisitSchedules(page, size);
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoVisitSchedulesFound() {
+        // Arrange
+        int page = 0, size = 10;
+        when(visitSchedulePersistencePort.getAllVisitSchedules(page, size))
+                .thenReturn(Optional.empty());
+
+        // Act
+        List<VisitScheduleModel> result = visitScheduleUseCase.getVisitSchedule(page, size, null, null);
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(visitSchedulePersistencePort).getAllVisitSchedules(page, size);
     }
 
 }

@@ -32,4 +32,7 @@ public class VisitScheduleEntity {
     @Column(name = "end_date_time", nullable = false)
     private LocalDateTime endDateTime;
 
+    @Column(name = "is_available", nullable = false)
+    private boolean isAvailable;
+
 }
